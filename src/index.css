@@ -1,0 +1,124 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Colors */
+
+  --c-primary-1: rgba(161, 189, 84, 1);
+  --c-primary-2: rgba(194, 227, 101, 1);
+  --c-primary-3: rgba(215, 252, 112, 1);
+  --c-primary-4: rgba(243, 254, 211, 1);
+  --c-primary-5: rgba(251, 255, 241, 1);
+
+  --c-secondary-1: rgba(0, 0, 0, 1);
+  --c-secondary-2: rgba(17, 17, 17, 1);
+  --c-secondary-3: rgba(35, 35, 35, 1);
+  --c-secondary-4: rgba(99, 99, 99, 1);
+  --c-secondary-5: rgba(219, 219, 219, 1);
+
+  --c-success-1: rgba(41, 174, 41, 1);
+  --c-warning-1: rgba(255, 198, 42, 1);
+  --c-error-1: rgba(239, 68, 68, 1);
+
+  --c-orange: rgba(237, 118, 21, 1);
+  --c-lavender: rgba(110, 60, 245, 1);
+  --c-sussie: rgba(56, 225, 241, 1);
+  --c-blue: rgba(0, 130, 255, 1);
+
+  --f-text-xl-bold: bolder 18px "Inter Variable", sans-serif;
+  --f-text-xl-semibold: bold 18px "Inter Variable", sans-serif;
+  --f-text-xl-regular: normal 18px "Inter Variable", sans-serif;
+  --f-text-xl-lighter: lighter 18px "Inter Variable", sans-serif;
+
+  --f-text-lg-bold: bolder 16px "Inter Variable", sans-serif;
+  --f-text-lg-semibold: bold 16px "Inter Variable", sans-serif;
+  --f-text-lg-regular: normal 16px "Inter Variable", sans-serif;
+  --f-text-lg-lighter: lighter 16px "Inter Variable", sans-serif;
+
+  --f-text-md-bold: bolder 14px "Inter Variable", sans-serif;
+  --f-text-md-semibold: semibold 14px "Inter Variable", sans-serif;
+  --f-text-md-regular: normal 14px "Inter Variable", sans-serif;
+  --f-text-md-lighter: lighter 14px "Inter Variable", sans-serif;
+
+  --f-text-sm-bold: bolder 12px "Inter Variable", sans-serif;
+  --f-text-sm-semibold: bold 12px "Inter Variable", sans-serif;
+  --f-text-sm-regular: normal 12px "Inter Variable", sans-serif;
+  --f-text-sm-lighter: lighter 12px "Inter Variable", sans-serif;
+
+  --f-text-xs-bold: bolder 10px "Inter Variable", sans-serif;
+  --f-text-xs-semibold: bold 10px "Inter Variable", sans-serif;
+  --f-text-xs-regular: normal 10px "Inter Variable", sans-serif;
+  --f-text-xs-lighter: lighter 10px "Inter Variable", sans-serif;
+
+  font: var(--f-text-sm-regular);
+  color: var(--c-primary-5);
+  color-scheme: light dark;
+  background-color: var(--c-secondary-2);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+}
+
+h1 {
+  font: bold 48px/1.1 "Sora Variable", sans-serif;
+  margin: 24px 0;
+}
+h2 {
+  font: bold 40px/1.1 "Sora Variable", sans-serif;
+  margin: 24px 0;
+}
+h3 {
+  font: bold 32px/1.1 "Sora Variable", sans-serif;
+  margin: 24px 0;
+}
+h4 {
+  font: bold 24px/1.1 "Sora Variable", sans-serif;
+  margin: 24px 0;
+}
+h5 {
+  font: bold 20px/1.1 "Sora Variable", sans-serif;
+  margin: 24px 0;
+}
+h6 {
+  font: bold 18px/1.1 "Sora Variable", sans-serif;
+  margin: 24px 0;
+}
+
+button {
+  border-radius: 16px;
+  border: 1px solid transparent;
+  padding: 12px 24px;
+  font: var(--f-text-lg-semibold);
+  cursor: pointer;
+  width: 80%;
+  transition: all 0.25s;
+}
+
+a {
+  font: var(--f-text-md-bold);
+  color: var(--c-primary-5);
+  cursor: pointer;
+}
+a:hover {
+  color: var(--c-primary-1);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
