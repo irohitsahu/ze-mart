@@ -24,12 +24,22 @@ export const OnboardingContentSectionCard = styled(motion.div)`
   background-color: var(--c-secondary-1);
 `;
 
-export const ContentWrapper = styled(motion.div)`
+export const animationSlideIn = {
+  initial: { x: 1000 },
+  animate: { x: 0 },
+  transition: { type: "spring", stiffness: 260, damping: 20 },
+};
+interface ContentWrapperProps {
+  animationSlideIn: string;
+}
+
+export const ContentWrapper = styled(motion.div)<ContentWrapperProps>`
   display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: center;
   padding: 10px;
+  animation: ${({ animationSlideIn }) => animationSlideIn};
 `;
 
 export const TitleText = styled.h4`
@@ -70,6 +80,6 @@ const WScreen = styled(motion.div)<WScreenProps>`
   height: 270px;
 `;
 
-export const WScreen1 = () => <WScreen bgImage={ws1} />;
-export const WScreen2 = () => <WScreen bgImage={ws2} />;
-export const WScreen3 = () => <WScreen bgImage={ws3} />;
+export const WScreen1 = () => <WScreen {...animationSlideIn} bgImage={ws1} />;
+export const WScreen2 = () => <WScreen {...animationSlideIn} bgImage={ws2} />;
+export const WScreen3 = () => <WScreen {...animationSlideIn} bgImage={ws3} />;
