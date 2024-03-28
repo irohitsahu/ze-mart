@@ -6,6 +6,13 @@ import ws3 from "../../assets/images/welcome-screen/ws-3.svg";
 
 import { motion } from "framer-motion";
 
+// Animations
+export const animationSlideIn = {
+  initial: { x: 1000 },
+  animate: { x: 0 },
+  transition: { type: "spring", stiffness: 260, damping: 20 },
+};
+
 export const WelcomeScreenWrapper = styled(motion.div)`
   margin: 0 auto;
   width: 100%;
@@ -24,22 +31,12 @@ export const OnboardingContentSectionCard = styled(motion.div)`
   background-color: var(--c-secondary-1);
 `;
 
-export const animationSlideIn = {
-  initial: { x: 1000 },
-  animate: { x: 0 },
-  transition: { type: "spring", stiffness: 260, damping: 20 },
-};
-interface ContentWrapperProps {
-  animationSlideIn: string;
-}
-
-export const ContentWrapper = styled(motion.div)<ContentWrapperProps>`
+export const ContentWrapper = styled(motion.div)`
   display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: center;
   padding: 10px;
-  animation: ${({ animationSlideIn }) => animationSlideIn};
 `;
 
 export const TitleText = styled.h4`
