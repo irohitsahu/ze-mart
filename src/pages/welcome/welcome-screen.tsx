@@ -10,6 +10,7 @@ import {
   ContentWrapper,
   LogInLink,
   LogInLinkWrapper,
+  animationSlideIn,
 } from "./welcome-screen-styles";
 
 import { getString } from "../../assets/messages/getString";
@@ -34,7 +35,7 @@ const WelcomeScreenContainer: React.FC = () => {
         )}
 
         <OnboardingContentSectionCard>
-          <ContentWrapper>
+          <ContentWrapper key={currentStep} {...animationSlideIn}>
             <TitleText>
               {getString(`welcomeHeadingStep${currentStep}`)}
             </TitleText>
