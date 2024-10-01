@@ -1,31 +1,31 @@
 import {
-  WelcomeScreenWrapper,
   WScreen1,
   WScreen2,
   WScreen3,
-  OnboardingContentSectionCard,
-  TitleText,
-  InfoText,
-  Button,
   ContentWrapper,
-  LogInLink,
-  LogInLinkWrapper,
   animationSlideIn,
 } from "./welcome-screen-styles";
 
 import { getString } from "../../assets/messages/getString";
 import { useState } from "react";
+import {
+  GButton,
+  GContentSectionCard,
+  GInfoText,
+  GMainScreenWrapper,
+  GTitleTextBig,
+} from "../../components/GlobalStyledComponents/GlobalStyledComponents";
+import { Link } from "react-router-dom";
 
 const WelcomeScreenContainer: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<number>(1);
 
   function handleNext() {
     setCurrentStep(currentStep + 1);
-    console.log(currentStep);
   }
   return (
     <>
-      <WelcomeScreenWrapper>
+      <GMainScreenWrapper>
         {currentStep === 1 ? (
           <WScreen1 />
         ) : currentStep === 2 ? (
@@ -34,22 +34,22 @@ const WelcomeScreenContainer: React.FC = () => {
           <WScreen3 />
         )}
 
-        <OnboardingContentSectionCard>
+        <GContentSectionCard>
           <ContentWrapper key={currentStep} {...animationSlideIn}>
-            <TitleText>
+            <GTitleTextBig>
               {getString(`welcomeHeadingStep${currentStep}`)}
-            </TitleText>
-            <InfoText>{getString(`welcomeInfoStep${currentStep}`)}</InfoText>
-            <Button onClick={handleNext}>
+            </GTitleTextBig>
+            <GInfoText>{getString(`welcomeInfoStep${currentStep}`)}</GInfoText>
+            <GButton onClick={handleNext}>
               {getString(`welcomeButtonStep${currentStep}`)}
-            </Button>
-            <LogInLinkWrapper>
-              <InfoText>Already Have An Account?</InfoText>
-              <LogInLink>Log In</LogInLink>
-            </LogInLinkWrapper>
+            </GButton>
+            <GInfoText>
+              Already Have An Account?
+              <Link to={"/login"}> Log In</Link>
+            </GInfoText>
           </ContentWrapper>
-        </OnboardingContentSectionCard>
-      </WelcomeScreenWrapper>
+        </GContentSectionCard>
+      </GMainScreenWrapper>
     </>
   );
 };
