@@ -8,7 +8,7 @@ import {
   GInput,
   GMainScreenWrapper,
   GTitleTextBig,
-} from "../../components/GlobalStyledComponents/GlobalStyledComponents";
+} from "../../../components/GlobalStyledComponents/GlobalStyledComponents";
 const SignUpScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
