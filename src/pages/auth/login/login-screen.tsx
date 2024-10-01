@@ -8,7 +8,7 @@ import {
   GInput,
   GMainScreenWrapper,
   GTitleTextBig,
-} from "../../components/GlobalStyledComponents/GlobalStyledComponents";
+} from "../../../components/GlobalStyledComponents/GlobalStyledComponents";
 
 export default function LoginContainer() {
   const [showPassword, setShowPassword] = useState(false);

@@ -6,7 +6,7 @@ import {
   GInfoText,
   GMainScreenWrapper,
   GTitleTextBig,
-} from "../../components/GlobalStyledComponents/GlobalStyledComponents";
+} from "../../../components/GlobalStyledComponents/GlobalStyledComponents";
 import { useEffect, useRef, useState } from "react";
 
 export default function ResetPassword() {
