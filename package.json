@@ -13,8 +13,10 @@
     "@fontsource-variable/inter": "^5.0.17",
     "@fontsource-variable/sora": "^5.0.17",
     "framer-motion": "^11.0.20",
+    "lucide-react": "^0.446.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.26.2",
     "styled-components": "^6.1.8"
   },
   "devDependencies": {
@@ -23,10 +25,12 @@
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
+    "autoprefixer": "^10.4.20",
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
-    "tailwindcss": "^3.4.1",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.13",
     "typescript": "^5.2.2",
     "vite": "^5.2.0"
   }

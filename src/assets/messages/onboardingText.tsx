@@ -4,12 +4,12 @@ export const WelcomeScreenText: Record<string, string> = {
     "Browse thousands of products, from fashion to tech. Find what you love, effortlessly.",
   welcomeButtonStep1: "Next",
 
-  welcomeHeadingStep2: "Explore Our Services",
+  welcomeHeadingStep2: "Hassle-Free Checkout",
   welcomeInfoStep2:
     "Browse thousands of products, from fashion to tech. Find what you love, effortlessly.",
   welcomeButtonStep2: "Next",
 
-  welcomeHeadingStep3: "Join Our Community",
+  welcomeHeadingStep3: "Easy and Happy Shopping",
   welcomeInfoStep3:
     "Browse thousands of products, from fashion to tech. Find what you love, effortlessly.",
   welcomeButtonStep3: "Get Started",

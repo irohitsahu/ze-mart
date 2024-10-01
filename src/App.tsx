@@ -1,12 +1,11 @@
+import { Outlet } from "react-router-dom";
 import "./App.css";
-
-import WelcomeScreens from "./pages/welcome";
 
 function App() {
   return (
-    <>
-      <WelcomeScreens />
-    </>
+    <div className="mobile-layout">
+      <Outlet />
+    </div>
   );
 }
 
