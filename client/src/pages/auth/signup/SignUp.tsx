@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { ChevronLeft, Eye, EyeOff, Phone, Lock } from "lucide-react";
-import { Link } from "react-router-dom";
+import { ChevronLeft, Eye, EyeOff, Lock, Mail, User } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { useSignupMutation } from "../../../service/authApi";
 import {
   GButton,
   GContentSectionCard,
@@ -9,9 +10,50 @@ import {
   GMainScreenWrapper,
   GTitleTextBig,
 } from "../../../components/GlobalStyledComponents/GlobalStyledComponents";
+
 const SignUpScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const navigate = useNavigate();
+  const [signup, { isLoading }] = useSignupMutation();
+
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    try {
+      const result = await signup({ username, email, password }).unwrap();
+      const { accessToken, refreshToken } = result;
+
+      // Store tokens in localStorage (consider using a more secure method in production)
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+
+      // Redirect to home page or dashboard
+      navigate("/home");
+    } catch (err) {
+      if (err && typeof err === "object" && "data" in err) {
+        setError(
+          (err.data as { message: string }).message ||
+            "An error occurred during signup"
+        );
+      } else {
+        setError("An unexpected error occurred");
+      }
+    }
+  };
+
   return (
     <GMainScreenWrapper>
       <header className="flex flex-col justify-start items-start w-full mt-10">
@@ -26,39 +68,70 @@ const SignUpScreen = () => {
         <GTitleTextBig>Get Started!</GTitleTextBig>
         <GInfoText>Enter your details below</GInfoText>
 
-        <div className="relative w-full">
-          <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-          <GInput type="tel" placeholder="Mobile Number" />
-        </div>
+        <form onSubmit={handleSignup}>
+          <div className="relative w-full">
+            <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <GInput
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </div>
 
-        <div className="relative w-full">
-          <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-          <GInput
-            type={showPassword ? "text" : "password"}
-            placeholder="Password"
-          />
-          <button
-            onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-0 text-gray-400 h-full w-10 p-0"
-          >
-            {showPassword ? <EyeOff /> : <Eye />}
-          </button>
-        </div>
-        <div className="relative w-full">
-          <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-          <GInput
-            type={showPassword ? "text" : "password"}
-            placeholder="Confirm Password"
-          />
-          <button
-            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            className="absolute right-0 text-gray-400 h-full w-10 p-0"
-          >
-            {showConfirmPassword ? <EyeOff /> : <Eye />}
-          </button>
-        </div>
+          <div className="relative w-full">
+            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <GInput
+              type="email"
+              placeholder="Enter Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
 
-        <GButton>Sign Up</GButton>
+          <div className="relative w-full">
+            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <GInput
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-0 text-gray-400 h-full w-10 p-0"
+            >
+              {showPassword ? <EyeOff /> : <Eye />}
+            </button>
+          </div>
+          <div className="relative w-full">
+            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <GInput
+              type={showConfirmPassword ? "text" : "password"}
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className="absolute right-0 text-gray-400 h-full w-10 p-0"
+            >
+              {showConfirmPassword ? <EyeOff /> : <Eye />}
+            </button>
+          </div>
+
+          {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+
+          <GButton type="submit" disabled={isLoading}>
+            {isLoading ? "Signing up..." : "Sign Up"}
+          </GButton>
+        </form>
 
         <div className="flex items-center mb-6 w-full">
           <div className="flex-grow h-px bg-gray-100"></div>
@@ -95,7 +168,7 @@ const SignUpScreen = () => {
         </div>
 
         <GInfoText>
-          Don't have an account?<Link to={"/login"}> Login</Link>
+          Already have an account? <Link to={"/login"}>Login</Link>
         </GInfoText>
       </GContentSectionCard>
     </GMainScreenWrapper>
