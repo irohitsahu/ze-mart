@@ -15,6 +15,7 @@ import Cart from "../pages/cart/Cart";
 import Profile from "../pages/profile/Profile";
 import Orders from "../pages/orders/Orders";
 import Home from "../pages/home/Home";
+import PrivateRoute from "./privateRoutes";
 
 export const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -26,12 +27,14 @@ export const routes = createBrowserRouter(
         <Route path="signUp" element={<SignUpScreen />} />
         <Route path="resetPassword" element={<ResetPassword />} />
 
-        <Route element={<Dashboard />}>
-          <Route path="home" element={<Home />} />
-          <Route path="category" element={<Category />} />
-          <Route path="cart" element={<Cart />} />
-          <Route path="orders" element={<Orders />} />
-          <Route path="profile" element={<Profile />} />
+        <Route element={<PrivateRoute />}>
+          <Route element={<Dashboard />}>
+            <Route path="home" element={<Home />} />
+            <Route path="category" element={<Category />} />
+            <Route path="cart" element={<Cart />} />
+            <Route path="orders" element={<Orders />} />
+            <Route path="profile" element={<Profile />} />
+          </Route>
         </Route>
       </Route>
     </>
