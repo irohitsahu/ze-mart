@@ -1,27 +1,34 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import {
   GButton,
-  GInput,
   GContentSectionCard,
+  GInput,
   GTitleTextBig,
 } from "../../components/GlobalStyledComponents/GlobalStyledComponents";
-import {
-  useGetUserQuery,
-  useUpdatePasswordMutation,
-  useUpdateUserMutation,
-} from "../../service/userApi";
 import { useLogoutMutation } from "../../service/authApi";
+import { clearUserAuth } from "../../store/slice/authSlice";
+import { RootState } from "../../store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteRefreshToken } from "../../util/cookies";
+import { useNavigate } from "react-router-dom";
+import { useGetUserQuery } from "../../service/userApi";
+import React from "react";
 
 const Profile = () => {
-  const { username } = useParams<{ username: string }>();
-  const navigate = useNavigate();
-  const { data: user, isLoading, error } = useGetUserQuery(username || "");
-  const [updateUser] = useUpdateUserMutation();
-  const [updatePassword] = useUpdatePasswordMutation();
-  const [logout] = useLogoutMutation();
+  const { username } = useSelector((state: RootState) => state.userAuth);
 
-  const [formData, setFormData] = useState({
+  console.log(username);
+  const [logout] = useLogoutMutation();
+  const accessToken = useSelector(
+    (state: RootState) => state.userAuth.accessToken
+  );
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { data: user, isLoading, error } = useGetUserQuery(username || "");
+  // const [updateUser] = useUpdateUserMutation();
+  // const [updatePassword] = useUpdatePasswordMutation();
+
+  const [formData, setFormData] = React.useState({
     email: "",
     username: "",
     firstName: "",
@@ -35,14 +42,15 @@ const Profile = () => {
     },
   });
 
-  const [passwordData, setPasswordData] = useState({
-    currentPassword: "",
-    newPassword: "",
-    confirmNewPassword: "",
-  });
+  // const [passwordData, setPasswordData] = useState({
+  //   currentPassword: "",
+  //   newPassword: "",
+  //   confirmNewPassword: "",
+  // });
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (user) {
+      console.log(user);
       setFormData({
         email: user.email,
         username: user.username,
@@ -57,81 +65,54 @@ const Profile = () => {
         },
       });
     }
-    console.log(user);
   }, [user]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    if (name.startsWith("address.")) {
-      const addressField = name.split(".")[1];
-      setFormData((prev) => ({
-        ...prev,
-        address: { ...prev.address, [addressField]: value },
-      }));
-    } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
-    }
+    console.log(e.target.value);
   };
 
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setPasswordData((prev) => ({ ...prev, [name]: value }));
-  };
+  // const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value } = e.target;
+  //   setPasswordData((prev) => ({ ...prev, [name]: value }));
+  // };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      await updateUser({
-        username: username || "",
-        updates: {
-          ...formData,
-          name: { firstname: formData.firstName, lastname: formData.lastName },
-        },
-      }).unwrap();
-      alert("Profile updated successfully");
-    } catch (err) {
-      alert("Failed to update profile");
-    }
+    console.log(formData);
   };
 
-  const handlePasswordUpdate = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (passwordData.newPassword !== passwordData.confirmNewPassword) {
-      alert("New passwords do not match");
-      return;
-    }
-    try {
-      await updatePassword({
-        username: username || "",
-        currentPassword: passwordData.currentPassword,
-        newPassword: passwordData.newPassword,
-      }).unwrap();
-      alert("Password updated successfully");
-      setPasswordData({
-        currentPassword: "",
-        newPassword: "",
-        confirmNewPassword: "",
-      });
-    } catch (err) {
-      alert("Failed to update password");
-    }
+  // const handlePasswordUpdate = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   if (passwordData.newPassword !== passwordData.confirmNewPassword) {
+  //     alert("New passwords do not match");
+  //     return;
+  //   }
+  //   try {
+  //     await updatePassword({
+  //       username: username || "",
+  //       currentPassword: passwordData.currentPassword,
+  //       newPassword: passwordData.newPassword,
+  //     }).unwrap();
+  //     alert("Password updated successfully");
+  //     setPasswordData({
+  //       currentPassword: "",
+  //       newPassword: "",
+  //       confirmNewPassword: "",
+  //     });
+  //   } catch (err) {
+  //     alert("Failed to update password");
+  //   }
+  // };
+
+  // if (isLoading) return <div>Loading...</div>;
+  // if (error) return <div>Error loading profile</div>;
+
+  const handleLogout = () => {
+    logout(accessToken);
+    deleteRefreshToken();
+    dispatch(clearUserAuth());
+    navigate("/login");
   };
-
-  const handleLogout = async () => {
-    try {
-      await logout().unwrap();
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
-      navigate("/login");
-    } catch (err) {
-      alert("Failed to logout");
-    }
-  };
-
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading profile</div>;
-  console.log(error);
-
   return (
     <div className="container mx-auto p-4">
       <GTitleTextBig>Profile</GTitleTextBig>
@@ -173,39 +154,11 @@ const Profile = () => {
             onChange={handleInputChange}
             placeholder="Phone"
           />
-          <GInput
-            type="text"
-            name="address.city"
-            value={formData.address.city}
-            onChange={handleInputChange}
-            placeholder="City"
-          />
-          <GInput
-            type="text"
-            name="address.street"
-            value={formData.address.street}
-            onChange={handleInputChange}
-            placeholder="Street"
-          />
-          <GInput
-            type="text"
-            name="address.number"
-            value={formData.address.number}
-            onChange={handleInputChange}
-            placeholder="Street Number"
-          />
-          <GInput
-            type="text"
-            name="address.zipcode"
-            value={formData.address.zipcode}
-            onChange={handleInputChange}
-            placeholder="Zipcode"
-          />
           <GButton type="submit">Update Profile</GButton>
         </form>
       </GContentSectionCard>
 
-      <GContentSectionCard>
+      {/* <GContentSectionCard>
         <form onSubmit={handlePasswordUpdate}>
           <GInput
             type="password"
@@ -233,7 +186,7 @@ const Profile = () => {
           />
           <GButton type="submit">Update Password</GButton>
         </form>
-      </GContentSectionCard>
+      </GContentSectionCard> */}
 
       <GButton onClick={handleLogout}>Logout</GButton>
     </div>

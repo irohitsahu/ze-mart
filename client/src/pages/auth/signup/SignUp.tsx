@@ -10,18 +10,24 @@ import {
   GMainScreenWrapper,
   GTitleTextBig,
 } from "../../../components/GlobalStyledComponents/GlobalStyledComponents";
+import { setRefreshToken } from "../../../util/cookies";
+import { setUserAuth } from "../../../store/slice/authSlice";
+import { useDispatch } from "react-redux";
 
 const SignUpScreen = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [signup, { isLoading: isSignupLoading }] = useSignupMutation();
+
+  const [error, setError] = useState("");
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
-
-  const navigate = useNavigate();
-  const [signup, { isLoading }] = useSignupMutation();
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,14 +39,19 @@ const SignUpScreen = () => {
     }
 
     try {
-      const result = await signup({ username, email, password }).unwrap();
-      const { accessToken, refreshToken } = result;
+      const {
+        accessToken,
+        refreshToken,
+        username: user,
+      } = await signup({
+        username,
+        email,
+        password,
+      }).unwrap();
 
-      // Store tokens in localStorage (consider using a more secure method in production)
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
+      dispatch(setUserAuth({ accessToken, username: user }));
+      setRefreshToken(refreshToken);
 
-      // Redirect to home page or dashboard
       navigate("/home");
     } catch (err) {
       if (err && typeof err === "object" && "data" in err) {
@@ -128,8 +139,8 @@ const SignUpScreen = () => {
 
           {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
 
-          <GButton type="submit" disabled={isLoading}>
-            {isLoading ? "Signing up..." : "Sign Up"}
+          <GButton type="submit" disabled={isSignupLoading}>
+            {isSignupLoading ? "Signing up..." : "Sign Up"}
           </GButton>
         </form>
 
