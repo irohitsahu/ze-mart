@@ -15,17 +15,20 @@ import Cart from "../pages/cart/Cart";
 import Profile from "../pages/profile/Profile";
 import Orders from "../pages/orders/Orders";
 import Home from "../pages/home/Home";
-import PrivateRoute from "./privateRoutes";
+import PrivateRoute from "./PrivateRoutes";
+import AuthRoute from "./AuthRoutes";
 
 export const routes = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<Navigate to="/home" />} />
       <Route element={<App />}>
-        <Route path="welcome" element={<WelcomeScreens />} />
-        <Route path="login" element={<LoginScreen />} />
-        <Route path="signUp" element={<SignUpScreen />} />
-        <Route path="resetPassword" element={<ResetPassword />} />
+        <Route element={<AuthRoute />}>
+          <Route path="welcome" element={<WelcomeScreens />} />
+          <Route path="login" element={<LoginScreen />} />
+          <Route path="signUp" element={<SignUpScreen />} />
+          <Route path="resetPassword" element={<ResetPassword />} />
+        </Route>
 
         <Route element={<PrivateRoute />}>
           <Route element={<Dashboard />}>

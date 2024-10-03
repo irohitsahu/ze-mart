@@ -10,30 +10,32 @@ import {
   GMainScreenWrapper,
   GTitleTextBig,
 } from "../../../components/GlobalStyledComponents/GlobalStyledComponents";
+import { setUserAuth } from "../../../store/slice/authSlice";
+import { setRefreshToken } from "../../../util/cookies";
+import { useDispatch } from "react-redux";
 
 export default function LoginContainer() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [login, { isLoading, error }] = useLoginMutation();
   const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
-
-  const [login, { isLoading, error }] = useLoginMutation();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const result = await login({ username, password }).unwrap();
-      const { accessToken, refreshToken } = result;
+      const { accessToken, refreshToken } = await login({
+        username,
+        password,
+      }).unwrap();
+      dispatch(setUserAuth({ accessToken, username }));
+      setRefreshToken(refreshToken);
 
-      // Store tokens in localStorage (consider using a more secure method in production)
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
-
-      // Redirect to home page or dashboard
       navigate("/home");
     } catch (err) {
-      // Error handling is managed by RTK Query
+      console.log(err);
     }
   };
 

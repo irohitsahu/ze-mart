@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const User = require("../model/user");
+const User = require("../model/userModel");
 
 module.exports = async function (req, res, next) {
   const authHeader = req.header("x-auth-token");
@@ -11,8 +11,6 @@ module.exports = async function (req, res, next) {
   try {
     const token = authHeader;
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    console.log(decoded);
 
     const user = await User.findOne({ username: decoded.username });
     if (!user) {

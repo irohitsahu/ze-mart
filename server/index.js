@@ -1,7 +1,7 @@
 const cors = require("cors");
 
-const userRoutes = require("./routes/user");
-const authRoutes = require("./routes/auth");
+const userRoutes = require("./routes/userRoutes");
+const authRoutes = require("./routes/authRoutes");
 
 const dotenv = require("dotenv");
 dotenv.config({ path: "./config/.env" });

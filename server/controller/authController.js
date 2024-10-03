@@ -1,4 +1,4 @@
-const User = require("../model/user");
+const User = require("../model/userModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -31,7 +31,7 @@ const authController = {
 
       const { accessToken, refreshToken } = generateTokens(user.username);
 
-      res.json({ accessToken, refreshToken });
+      res.json({ accessToken, refreshToken, username: user.username });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
@@ -59,7 +59,9 @@ const authController = {
 
       const { accessToken, refreshToken } = generateTokens(user.username);
 
-      res.status(201).json({ accessToken, refreshToken });
+      res
+        .status(201)
+        .json({ accessToken, refreshToken, username: user.username });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
@@ -76,15 +78,24 @@ const authController = {
       const { accessToken, refreshToken: newRefreshToken } = generateTokens(
         decoded.id
       );
-      res.json({ accessToken, refreshToken: newRefreshToken });
+      res.json({
+        accessToken,
+        refreshToken: newRefreshToken,
+        username: decoded.username,
+      });
     } catch (error) {
       res.status(403).json({ message: "Invalid refresh token" });
     }
   },
 
   logout: async (req, res) => {
-    // In a more complex system, you might want to invalidate the refresh token here
-    res.json({ message: "Logged out successfully" });
+    try {
+      res.json({ message: "Logged out successfully" });
+    } catch (error) {
+      res
+        .status(500)
+        .json({ message: "Error logging out", error: error.message });
+    }
   },
 };
 
