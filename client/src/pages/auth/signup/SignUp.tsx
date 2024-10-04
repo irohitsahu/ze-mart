@@ -10,7 +10,10 @@ import {
   GMainScreenWrapper,
   GTitleTextBig,
 } from "../../../components/GlobalStyledComponents/GlobalStyledComponents";
-import { setRefreshToken } from "../../../util/cookies";
+import {
+  setRefreshTokenCookie,
+  setUsernameCookie,
+} from "../../../util/cookies";
 import { setUserAuth } from "../../../store/slice/authSlice";
 import { useDispatch } from "react-redux";
 
@@ -49,8 +52,9 @@ const SignUpScreen = () => {
         password,
       }).unwrap();
 
-      dispatch(setUserAuth({ accessToken, username: user }));
-      setRefreshToken(refreshToken);
+      dispatch(setUserAuth({ accessToken }));
+      setRefreshTokenCookie(refreshToken);
+      setUsernameCookie(user);
 
       navigate("/home");
     } catch (err) {

@@ -11,7 +11,10 @@ import {
   GTitleTextBig,
 } from "../../../components/GlobalStyledComponents/GlobalStyledComponents";
 import { setUserAuth } from "../../../store/slice/authSlice";
-import { setRefreshToken } from "../../../util/cookies";
+import {
+  setRefreshTokenCookie,
+  setUsernameCookie,
+} from "../../../util/cookies";
 import { useDispatch } from "react-redux";
 
 export default function LoginContainer() {
@@ -30,8 +33,9 @@ export default function LoginContainer() {
         username,
         password,
       }).unwrap();
-      dispatch(setUserAuth({ accessToken, username }));
-      setRefreshToken(refreshToken);
+      dispatch(setUserAuth({ accessToken }));
+      setRefreshTokenCookie(refreshToken);
+      setUsernameCookie(username);
 
       navigate("/home");
     } catch (err) {

@@ -68,20 +68,17 @@ const authController = {
   },
 
   refreshToken: async (req, res) => {
-    const { refreshToken } = req.body;
+    const { refreshToken, username } = req.body;
     if (!refreshToken) {
       return res.status(401).json({ message: "Refresh Token is required" });
     }
 
     try {
-      const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
-      const { accessToken, refreshToken: newRefreshToken } = generateTokens(
-        decoded.id
-      );
+      const { accessToken, refreshToken: newRefreshToken } =
+        generateTokens(username);
       res.json({
         accessToken,
         refreshToken: newRefreshToken,
-        username: decoded.username,
       });
     } catch (error) {
       res.status(403).json({ message: "Invalid refresh token" });

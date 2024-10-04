@@ -8,15 +8,18 @@ import { useLogoutMutation } from "../../service/authApi";
 import { clearUserAuth } from "../../store/slice/authSlice";
 import { RootState } from "../../store/store";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteRefreshToken } from "../../util/cookies";
+import {
+  deleteRefreshTokenCookie,
+  getUsernameCookie,
+} from "../../util/cookies";
 import { useNavigate } from "react-router-dom";
 import { useGetUserQuery } from "../../service/userApi";
 import React from "react";
+import { setUserState } from "../../store/slice/userSLice";
 
 const Profile = () => {
-  const { username } = useSelector((state: RootState) => state.userAuth);
+  const username = getUsernameCookie();
 
-  console.log(username);
   const [logout] = useLogoutMutation();
   const accessToken = useSelector(
     (state: RootState) => state.userAuth.accessToken
@@ -24,7 +27,11 @@ const Profile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { data: user, isLoading, error } = useGetUserQuery(username || "");
+  const {
+    data: user,
+    isLoading,
+    error,
+  } = useGetUserQuery(username || "", { skip: !username });
   // const [updateUser] = useUpdateUserMutation();
   // const [updatePassword] = useUpdatePasswordMutation();
 
@@ -50,7 +57,7 @@ const Profile = () => {
 
   React.useEffect(() => {
     if (user) {
-      console.log(user);
+      dispatch(setUserState(user));
       setFormData({
         email: user.email,
         username: user.username,
@@ -65,7 +72,7 @@ const Profile = () => {
         },
       });
     }
-  }, [user]);
+  }, [user, dispatch]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value);
@@ -109,7 +116,7 @@ const Profile = () => {
 
   const handleLogout = () => {
     logout(accessToken);
-    deleteRefreshToken();
+    deleteRefreshTokenCookie();
     dispatch(clearUserAuth());
     navigate("/login");
   };

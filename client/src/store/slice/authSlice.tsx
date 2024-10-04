@@ -2,12 +2,10 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type AuthState = {
   accessToken: string | null;
-  username: string | null;
 };
 
 const initialState: AuthState = {
   accessToken: null,
-  username: null,
 };
 
 export const authSlice = createSlice({
@@ -18,13 +16,9 @@ export const authSlice = createSlice({
       if (action.payload.accessToken) {
         state.accessToken = action.payload.accessToken;
       }
-      if (action.payload.username) {
-        state.username = action.payload.username;
-      }
     },
     clearUserAuth: (state) => {
       state.accessToken = null;
-      state.username = null;
     },
   },
 });

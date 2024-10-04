@@ -3,25 +3,32 @@ import { useDispatch } from "react-redux";
 import { useRefreshTokenMutation } from "../service/authApi";
 
 import { setUserAuth } from "../store/slice/authSlice";
-import { getRefreshToken, setRefreshToken } from "../util/cookies";
+import {
+  getRefreshTokenCookie,
+  getUsernameCookie,
+  setRefreshTokenCookie,
+} from "../util/cookies";
 
 export const useAutoLogin = () => {
   const dispatch = useDispatch();
-  const [RefreshTokenResponse] = useRefreshTokenMutation();
-  const refreshToken = getRefreshToken();
+  const [refreshTokenMutation] = useRefreshTokenMutation();
+  const refreshToken = getRefreshTokenCookie();
+  const username = getUsernameCookie();
 
   useEffect(() => {
     const attemptAutoLogin = async () => {
       if (refreshToken) {
         try {
-          const result = await RefreshTokenResponse(refreshToken).unwrap();
+          const result = await refreshTokenMutation({
+            refreshToken,
+            username,
+          }).unwrap();
           dispatch(
             setUserAuth({
               accessToken: result.accessToken,
-              username: result.username,
             })
           );
-          setRefreshToken(result.refreshToken);
+          setRefreshTokenCookie(result.refreshToken);
         } catch (error) {
           console.error("Auto login failed:", error);
         }
@@ -29,5 +36,5 @@ export const useAutoLogin = () => {
     };
 
     attemptAutoLogin();
-  }, [dispatch, refreshToken]);
+  }, [dispatch, refreshToken, refreshTokenMutation]);
 };
