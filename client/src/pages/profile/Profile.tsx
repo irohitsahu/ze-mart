@@ -1,6 +1,7 @@
 import {
   GButton,
-  GContentSectionCard,
+  GDarkBgCard,
+  GForm,
   GInput,
   GTitleTextBig,
 } from "../../components/GlobalStyledComponents/GlobalStyledComponents";
@@ -11,9 +12,10 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   deleteRefreshTokenCookie,
   getUsernameCookie,
+  setUsernameCookie,
 } from "../../util/cookies";
 import { useNavigate } from "react-router-dom";
-import { useGetUserQuery } from "../../service/userApi";
+import { useGetUserQuery, useUpdateUserMutation } from "../../service/userApi";
 import React from "react";
 import { setUserState } from "../../store/slice/userSLice";
 
@@ -32,6 +34,8 @@ const Profile = () => {
     isLoading,
     error,
   } = useGetUserQuery(username || "", { skip: !username });
+
+  const [updateUser] = useUpdateUserMutation();
   // const [updateUser] = useUpdateUserMutation();
   // const [updatePassword] = useUpdatePasswordMutation();
 
@@ -75,7 +79,8 @@ const Profile = () => {
   }, [user, dispatch]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   // const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,6 +91,13 @@ const Profile = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log(formData);
+    try {
+      await updateUser({ username: username, updates: formData }).unwrap();
+      setUsernameCookie(formData.username);
+      alert("Profile updated successfully");
+    } catch (err) {
+      alert("Failed to update profile");
+    }
   };
 
   // const handlePasswordUpdate = async (e: React.FormEvent) => {
@@ -121,49 +133,47 @@ const Profile = () => {
     navigate("/login");
   };
   return (
-    <div className="container mx-auto p-4">
+    <GDarkBgCard>
       <GTitleTextBig>Profile</GTitleTextBig>
-      <GContentSectionCard>
-        <form onSubmit={handleSubmit}>
-          <GInput
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            placeholder="Email"
-            required
-          />
-          <GInput
-            type="text"
-            name="username"
-            value={formData.username}
-            onChange={handleInputChange}
-            placeholder="Username"
-          />
-          <GInput
-            type="text"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleInputChange}
-            placeholder="First Name"
-          />
-          <GInput
-            type="text"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleInputChange}
-            placeholder="Last Name"
-          />
-          <GInput
-            type="tel"
-            name="phone"
-            value={formData.phone}
-            onChange={handleInputChange}
-            placeholder="Phone"
-          />
-          <GButton type="submit">Update Profile</GButton>
-        </form>
-      </GContentSectionCard>
+      <GForm onSubmit={handleSubmit}>
+        <GInput
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleInputChange}
+          placeholder="Email"
+          required
+        />
+        <GInput
+          type="text"
+          name="username"
+          value={formData.username}
+          onChange={handleInputChange}
+          placeholder="Username"
+        />
+        <GInput
+          type="text"
+          name="firstName"
+          value={formData.firstName}
+          onChange={handleInputChange}
+          placeholder="First Name"
+        />
+        <GInput
+          type="text"
+          name="lastName"
+          value={formData.lastName}
+          onChange={handleInputChange}
+          placeholder="Last Name"
+        />
+        <GInput
+          type="tel"
+          name="phone"
+          value={formData.phone}
+          onChange={handleInputChange}
+          placeholder="Phone"
+        />
+        <GButton type="submit">Update Profile</GButton>
+      </GForm>
 
       {/* <GContentSectionCard>
         <form onSubmit={handlePasswordUpdate}>
@@ -196,7 +206,7 @@ const Profile = () => {
       </GContentSectionCard> */}
 
       <GButton onClick={handleLogout}>Logout</GButton>
-    </div>
+    </GDarkBgCard>
   );
 };
 

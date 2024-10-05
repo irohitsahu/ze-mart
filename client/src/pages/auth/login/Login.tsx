@@ -5,6 +5,7 @@ import { useLoginMutation } from "../../../service/authApi";
 import {
   GButton,
   GContentSectionCard,
+  GForm,
   GInfoText,
   GInput,
   GMainScreenWrapper,
@@ -46,7 +47,7 @@ export default function LoginContainer() {
   return (
     <GMainScreenWrapper>
       <header className="flex flex-col justify-start items-start w-full mt-10">
-        <Link to="/home" className="p-2 rounded-full bg-black">
+        <Link to="/welcome" className="p-2 rounded-full bg-black">
           <ChevronLeft />
         </Link>
         <h1 className="text-6xl font-bold text-center">
@@ -57,7 +58,7 @@ export default function LoginContainer() {
         <GTitleTextBig>Welcome Back!</GTitleTextBig>
         <GInfoText>Enter your details below</GInfoText>
 
-        <form onSubmit={handleLogin}>
+        <GForm onSubmit={handleLogin}>
           <div className="relative w-full">
             <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             <GInput
@@ -97,7 +98,7 @@ export default function LoginContainer() {
           <GButton type="submit" disabled={isLoading}>
             {isLoading ? "Logging in..." : "Log In"}
           </GButton>
-        </form>
+        </GForm>
 
         <GInfoText>
           Forgot Password?<Link to={"/resetPassword"}> Reset Now</Link>

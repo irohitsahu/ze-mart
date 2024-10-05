@@ -4,7 +4,7 @@ import {
   WScreen3,
   ContentWrapper,
   animationSlideIn,
-} from "./welcome-screen-styles";
+} from "./WelcomeStyle";
 
 import { getString } from "../../assets/messages/getString";
 import { useState } from "react";
@@ -15,13 +15,17 @@ import {
   GMainScreenWrapper,
   GTitleTextBig,
 } from "../../components/GlobalStyledComponents/GlobalStyledComponents";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-const WelcomeScreenContainer: React.FC = () => {
+const WelcomeContainer = () => {
   const [currentStep, setCurrentStep] = useState<number>(1);
+  const navigate = useNavigate();
 
   function handleNext() {
     setCurrentStep(currentStep + 1);
+    if (currentStep === 3) {
+      navigate("/login");
+    }
   }
   return (
     <>
@@ -54,4 +58,4 @@ const WelcomeScreenContainer: React.FC = () => {
   );
 };
 
-export default WelcomeScreenContainer;
+export default WelcomeContainer;

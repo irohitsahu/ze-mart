@@ -5,6 +5,7 @@ import { useSignupMutation } from "../../../service/authApi";
 import {
   GButton,
   GContentSectionCard,
+  GForm,
   GInfoText,
   GInput,
   GMainScreenWrapper,
@@ -83,7 +84,7 @@ const SignUpScreen = () => {
         <GTitleTextBig>Get Started!</GTitleTextBig>
         <GInfoText>Enter your details below</GInfoText>
 
-        <form onSubmit={handleSignup}>
+        <GForm onSubmit={handleSignup}>
           <div className="relative w-full">
             <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             <GInput
@@ -146,7 +147,7 @@ const SignUpScreen = () => {
           <GButton type="submit" disabled={isSignupLoading}>
             {isSignupLoading ? "Signing up..." : "Sign Up"}
           </GButton>
-        </form>
+        </GForm>
 
         <div className="flex items-center mb-6 w-full">
           <div className="flex-grow h-px bg-gray-100"></div>

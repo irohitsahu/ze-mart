@@ -4,11 +4,11 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
-import LoginScreen from "../pages/auth/login";
+import LoginScreen from "../pages/auth/login/Login";
 import App from "../App";
-import WelcomeScreens from "../pages/welcome";
+
 import SignUpScreen from "../pages/auth/signup/SignUp";
-import ResetPassword from "../pages/auth/resetPassword/resetPassword";
+import ResetPassword from "../pages/auth/resetPassword/ResetPassword";
 import Dashboard from "../pages/dashboard/Dashboard";
 import Category from "../pages/category/Category";
 import Cart from "../pages/cart/Cart";
@@ -17,6 +17,7 @@ import Orders from "../pages/orders/Orders";
 import Home from "../pages/home/Home";
 import PrivateRoute from "./PrivateRoutes";
 import AuthRoute from "./AuthRoutes";
+import WelcomeContainer from "../pages/welcome/Welcome";
 
 export const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -24,7 +25,7 @@ export const routes = createBrowserRouter(
       <Route path="/" element={<Navigate to="/home" />} />
       <Route element={<App />}>
         <Route element={<AuthRoute />}>
-          <Route path="welcome" element={<WelcomeScreens />} />
+          <Route path="welcome" element={<WelcomeContainer />} />
           <Route path="login" element={<LoginScreen />} />
           <Route path="signUp" element={<SignUpScreen />} />
           <Route path="resetPassword" element={<ResetPassword />} />
