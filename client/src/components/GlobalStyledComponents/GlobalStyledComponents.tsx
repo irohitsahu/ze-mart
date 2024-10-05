@@ -26,6 +26,16 @@ export const GContentSectionCard = styled(motion.div)`
   padding: 1rem 3rem;
 `;
 
+export const GDarkBgCard = styled(motion.div)`
+  background-color: var(--c-secondary-1);
+  padding: 1rem;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+`;
+
 export const GButton = styled.button`
   background-color: var(--c-primary-3);
   color: var(--c-secondary-1);
@@ -43,6 +53,13 @@ export const GInput = styled.input`
   &::placeholder {
     color: #9ca3af;
   }
+`;
+export const GForm = styled.form`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
 `;
 
 export const GTitleTextBig = styled.p`
